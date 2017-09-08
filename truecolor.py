@@ -50,7 +50,7 @@ def bold(color):
 
 def dim(color):
     """Return a dimmer version of a color tuple."""
-    return tuple(int(i / 2) for i in color)
+    return tuple(i // 2 for i in color)
 
 
 def hex_to_rgb(hex_string):
