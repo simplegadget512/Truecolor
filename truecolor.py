@@ -3,9 +3,9 @@
 
 import os
 
-
 if os.getenv('COLORTERM') is None:
     raise RuntimeError('Not a true color terminal')
+del os
 
 
 COLORS = {
@@ -22,6 +22,9 @@ COLORS = {
 
     'purple':   (32, 0, 127)
 }
+
+GAMUT_MIN = 0
+GAMUT_MAX = 254
 
 
 def _f(red_component, green_component, blue_component):
@@ -40,17 +43,21 @@ def _r():
 
 
 def _gamut(component):
-    return int(component) if component < 255 else 254
+    if component > GAMUT_MAX:
+        return GAMUT_MAX
+    if component < GAMUT_MIN:
+        return GAMUT_MIN
+    return component
 
 
 def bold(color):
     """Return a bolder version of a color tuple."""
-    return tuple(_gamut(i*2) for i in color)
+    return tuple(_gamut(int(i*2)) for i in color)
 
 
 def dim(color):
     """Return a dimmer version of a color tuple."""
-    return tuple(int(i/2) for i in color)
+    return tuple(_gamut(int(i/2)) for i in color)
 
 
 def hex_to_rgb(hex_string):
@@ -95,8 +102,8 @@ def color_print(txt, foreground=COLORS['white'], background=COLORS['black']):
 if __name__ == "__main__":
     for color_name in COLORS:
         color_print('{} :: {} :: bright {} on dim {}'.format(rgb_to_hex(bold(COLORS[color_name])),
-                                                         rgb_to_hex(dim(COLORS[color_name])),
-                                                         color_name,
-                                                         color_name).ljust(64, ' '),
+                                                             rgb_to_hex(dim(COLORS[color_name])),
+                                                             color_name,
+                                                             color_name).ljust(64, ' '),
                     bold(COLORS[color_name]),
                     dim(COLORS[color_name]))
