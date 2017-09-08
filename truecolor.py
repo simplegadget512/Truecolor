@@ -45,7 +45,7 @@ def _gamut(component):
 
 def bold(color):
     """Return a bolder version of a color tuple."""
-    return tuple(_gamut(int(i * 2)) for i in color)
+    return tuple(_gamut(i * 2) for i in color)
 
 
 def dim(color):
