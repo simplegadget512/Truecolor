@@ -2,6 +2,7 @@
 
 ##### 2017-09-30
 
+* changed COLORS to PALETTE
 * fore_text, color_text, fore_print and color_print now accept hex as color specifier
 * added check to fore_text, color_text for properly formatted hex string
 * document the rgb_to_hex function a bit better

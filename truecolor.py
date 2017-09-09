@@ -6,7 +6,7 @@ import os
 if os.getenv('COLORTERM') is None:
     raise RuntimeError('Not a truecolor terminal - use termcolor module instead')
 
-COLORS = {
+PALETTE = {
     'white': (127, 127, 127),
     'grey': (64, 64, 64),
     'black': (0, 0, 0),
@@ -79,14 +79,14 @@ def rgb_to_hex(red_component=None, green_component=None, blue_component=None):
         red_component, green_component, blue_component)
 
 
-def fore_text(txt, foreground=COLORS['white']):
+def fore_text(txt, foreground=PALETTE['white']):
     """Return text string with foreground only set."""
     if isinstance(foreground, str) and foreground.startswith('#'):
         foreground = hex_to_rgb(foreground)
     return '{}{}{}'.format(_f(*foreground), txt, _r())
 
 
-def color_text(txt, foreground=COLORS['white'], background=COLORS['black']):
+def color_text(txt, foreground=PALETTE['white'], background=PALETTE['black']):
     """Return text string with foreground and background set."""
     if isinstance(foreground, str) and foreground.startswith('#'):
         foreground = hex_to_rgb(foreground)
@@ -95,25 +95,25 @@ def color_text(txt, foreground=COLORS['white'], background=COLORS['black']):
     return '{}{}{}{}'.format(_f(*foreground), _b(*background), txt, _r())
 
 
-def fore_print(txt, foreground=COLORS['white']):
+def fore_print(txt, foreground=PALETTE['white']):
     """Print text string with foreground only set."""
     print(fore_text(txt, foreground))
 
 
-def color_print(txt, foreground=COLORS['white'], background=COLORS['black']):
+def color_print(txt, foreground=PALETTE['white'], background=PALETTE['black']):
     """Print text string with foreground and background set."""
     print(color_text(txt, foreground, background))
 
 
 if __name__ == "__main__":
-    for color_name in COLORS:
+    for color_name in PALETTE:
         color_print(
             '{} :: {} :: bright {} on dim {}'.format(
-                rgb_to_hex(bold(COLORS[color_name])),
-                rgb_to_hex(dim(COLORS[color_name])),
+                rgb_to_hex(bold(PALETTE[color_name])),
+                rgb_to_hex(dim(PALETTE[color_name])),
                 color_name,
                 color_name
             ).ljust(64, ' '),
-            bold(COLORS[color_name]),
-            dim(COLORS[color_name])
+            bold(PALETTE[color_name]),
+            dim(PALETTE[color_name])
         )
