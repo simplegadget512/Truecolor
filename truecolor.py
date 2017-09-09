@@ -4,7 +4,7 @@
 import os
 
 if os.getenv('COLORTERM') is None:
-    raise RuntimeError('Not a true color terminal')
+    raise RuntimeError('Not a truecolor terminal - use termcolor module instead')
 
 COLORS = {
     'white': (127, 127, 127),
@@ -40,6 +40,7 @@ def _r():
 
 
 def _gamut(component):
+    """keeps color components in the proper range"""
     return min(max(int(component), 0), 254)
 
 
@@ -63,7 +64,14 @@ def hex_to_rgb(hex_string):
 
 def rgb_to_hex(red_component=None, green_component=None, blue_component=None):
     """Return color as #rrggbb for the given color tuple or component
-    values.
+    values. Can be called as
+
+    TUPLE VERSION:
+        rgb_to_hex(COLORS['white']) or rgb_to_hex((128, 63, 96))
+
+    COMPONENT VERSION
+        rgb_to_hex(64, 183, 22)
+
     """
     if isinstance(red_component, tuple):
         red_component, green_component, blue_component = red_component
@@ -73,13 +81,17 @@ def rgb_to_hex(red_component=None, green_component=None, blue_component=None):
 
 def fore_text(txt, foreground=COLORS['white']):
     """Return text string with foreground only set."""
-    if foreground.startswith('#'):
+    if isinstance(foreground, str) and foreground.startswith('#'):
         foreground = hex_to_rgb(foreground)
     return '{}{}{}'.format(_f(*foreground), txt, _r())
 
 
 def color_text(txt, foreground=COLORS['white'], background=COLORS['black']):
     """Return text string with foreground and background set."""
+    if isinstance(foreground, str) and foreground.startswith('#'):
+        foreground = hex_to_rgb(foreground)
+    if isinstance(background, str) and background.startswith('#'):
+        background = hex_to_rgb(background)
     return '{}{}{}{}'.format(_f(*foreground), _b(*background), txt, _r())
 
 
