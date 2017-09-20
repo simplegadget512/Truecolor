@@ -21,17 +21,24 @@ PALETTE = {
     'purple': (32, 0, 127)
 }
 
+Z_FORE = 38
+Z_BACK = 48
+
+
+def _e(red_component, green_component, blue_component, z_level=Z_FORE):
+    """Return escaped color sequence"""
+    return '\x01\x1b[{};2;{};{};{}m\x02'.format(
+        z_level, red_component, green_component, blue_component)
+
 
 def _f(red_component, green_component, blue_component):
     """Return escaped foreground color sequence"""
-    return '\x01\x1b[38;2;{};{};{}m\x02'.format(
-        red_component, green_component, blue_component)
+    return _e(red_component, green_component, blue_component, Z_FORE)
 
 
 def _b(red_component, green_component, blue_component):
     """Return escaped background color sequence"""
-    return '\x01\x1b[48;2;{};{};{}m\x02'.format(
-        red_component, green_component, blue_component)
+    return _e(red_component, green_component, blue_component, Z_BACK)
 
 
 def _r():
